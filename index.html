@@ -1,194 +1,532 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechMind AI Security | Agents for Hire</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #0a0a0f; color: #f0e6ff; line-height: 1.7; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-        .hero { padding: 100px 0 80px; text-align: center; position: relative; overflow: hidden; }
-        .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 30%, rgba(167,139,250,0.08) 0%, transparent 60%); pointer-events: none; }
-        .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 20px; position: relative; }
-        .hero h1 span { background: linear-gradient(135deg, #a78bfa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .hero p { font-size: 1.2rem; color: #a89bc9; max-width: 600px; margin: 0 auto 40px; position: relative; }
-        .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; }
-        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; border-radius: 12px; font-size: 1rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; border: none; cursor: pointer; }
-        .btn-primary { background: linear-gradient(135deg, #a78bfa, #8b5cf6); color: #fff; box-shadow: 0 4px 20px rgba(167,139,250,0.3); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(167,139,250,0.45); }
-        .btn-outline { background: transparent; color: #a78bfa; border: 1.5px solid rgba(167,139,250,0.3); }
-        .btn-outline:hover { border-color: #a78bfa; background: rgba(167,139,250,0.1); }
-        .pricing { padding: 80px 0; }
-        .section-title { text-align: center; margin-bottom: 60px; }
-        .section-title h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 12px; }
-        .section-title p { color: #a89bc9; font-size: 1.1rem; }
-        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
-        .pricing-card { background: #1a1a28; border: 1px solid #2a2a44; border-radius: 20px; padding: 40px 32px; text-align: center; transition: all 0.3s ease; position: relative; }
-        .pricing-card:hover { border-color: #a78bfa; transform: translateY(-4px); box-shadow: 0 8px 40px rgba(167,139,250,0.15); }
-        .pricing-card.featured { border-color: #a78bfa; background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(52,211,153,0.05)); }
-        .pricing-card.featured::before { content: '⭐ MOST POPULAR'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #a78bfa, #8b5cf6); color: #fff; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; padding: 4px 16px; border-radius: 100px; }
-        .plan-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
-        .plan-desc { color: #6b5e8a; font-size: 0.9rem; margin-bottom: 24px; }
-        .plan-price { margin-bottom: 24px; }
-        .plan-price .amount { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg, #a78bfa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .plan-price .period { color: #6b5e8a; font-size: 0.9rem; }
-        .plan-features { list-style: none; margin-bottom: 32px; text-align: left; }
-        .plan-features li { padding: 8px 0; color: #a89bc9; font-size: 0.95rem; display: flex; align-items: center; gap: 10px; }
-        .plan-features li::before { content: '✓'; color: #34d399; font-weight: 700; }
-        .features { padding: 80px 0; background: #12121a; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 32px; }
-        .feature-card { text-align: center; padding: 32px; }
-        .feature-icon { font-size: 2.5rem; margin-bottom: 16px; display: block; }
-        .feature-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
-        .feature-card p { color: #6b5e8a; font-size: 0.9rem; }
-        /* Blog Section */
-        .blog { padding: 80px 0; }
-        .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; }
-        .blog-card { background: #1a1a28; border: 1px solid #2a2a44; border-radius: 16px; overflow: hidden; transition: all 0.3s ease; }
-        .blog-card:hover { border-color: #a78bfa; transform: translateY(-4px); }
-        .blog-card-content { padding: 28px; }
-        .blog-date { color: #6b5e8a; font-size: 0.8rem; margin-bottom: 8px; }
-        .blog-card h3 { font-size: 1.15rem; margin-bottom: 12px; font-family: var(--font-sans); }
-        .blog-card p { color: #a89bc9; font-size: 0.9rem; line-height: 1.6; }
-        .blog-link { color: #a78bfa; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-top: 12px; }
-        .cta { padding: 100px 0; text-align: center; }
-        .cta h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 16px; }
-        .cta p { color: #a89bc9; font-size: 1.1rem; margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
-        .footer { padding: 40px 0; border-top: 1px solid #2a2a44; text-align: center; color: #6b5e8a; font-size: 0.85rem; }
-        @media (max-width: 768px) { .hero { padding: 60px 0; } .pricing-card { padding: 32px 24px; } }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="d9h3OrUdQ9fQBnnsh0mvYx4MTLdvuC2-DCfxWxcP9_w">
+  <title>AI Sales Assistants &amp; Automation Services | TechMind</title>
+  <meta name="description" content="Deploy AI sales assistants to qualify leads, streamline CRM workflows, and prepare follow-ups for human approval. Explore TechMind AI agent solutions — now including Answer Engine Optimization (AEO).">
+  <meta name="keywords" content="AI sales assistant, AI lead qualification, sales automation, AI sales agents, CRM automation, appointment booking, AI agent teams, answer engine optimization, AEO, TechMind AI">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="author" content="TechMind">
+  <link rel="canonical" href="https://techmind.it.com/">
+  <meta property="og:title" content="AI Sales Assistants &amp; Automation Services | TechMind">
+  <meta property="og:description" content="AI-powered sales teams for lead qualification, CRM workflows, and human-approved follow-ups. Now with Answer Engine Optimization (AEO).">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://techmind.it.com/">
+  <meta property="og:site_name" content="TechMind">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://techmind.it.com/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Sales Assistants &amp; Automation Services | TechMind">
+  <meta name="twitter:description" content="AI sales assistants for lead qualification, CRM workflows, and appointment scheduling. Now with Answer Engine Optimization (AEO).">
+  <meta name="twitter:image" content="https://techmind.it.com/og-image.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@600;700;800;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "TechMind",
+    "alternateName": ["TechMind", "TechMind AI", "techmind.it.com"],
+    "url": "https://techmind.it.com",
+    "description": "AI sales assistants and custom AI agent teams for lead qualification, CRM preparation, and human-approved sales follow-ups.",
+    "email": "hello@techmind.it.com",
+    "telephone": "+1-408-624-8411",
+    "areaServed": "Worldwide",
+    "knowsAbout": ["Business AI Agents", "AI Workflow Automation", "Answer Engine Optimization", "Generative Engine Optimization", "ChatGPT", "Claude AI", "Google Gemini", "Perplexity AI", "Cybersecurity", "AI Video Generation"],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "TechMind AI Sales Automation Services",
+      "itemListElement": [
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Business AI Agent Deployment", "description": "Custom AI assistants for lead qualification, appointment coordination, customer inquiries, and business workflows with human oversight."}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Answer Engine Optimization (AEO)", "description": "Help AI tools such as ChatGPT, Perplexity, Google AI Overviews, Copilot, and Gemini find, understand, and cite a business in their answers. Includes AI crawler access, sitemap, llms.txt, structured data, answer-first pages, and citation tracking and reporting. No citation, ranking, or placement is guaranteed."}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "AI Video Production", "description": "AI-powered video generation and content production using the latest generative AI models."}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Enterprise Cybersecurity AI", "description": "Custom enterprise AI workflows scoped to business needs and human review."}}
+      ]
+    },
+    "sameAs": ["https://techmind.it.com"]
+  }
+  </script>
+  <style>
+  /* Restyled to match the businessloan.space splash page look:
+     light warm background, navy ink, green + gold accents,
+     Libre Franklin headings, Source Sans 3 body, pill buttons,
+     white cards with soft shadows. Content and packages unchanged. */
+  :root{
+    --bg:#F5F6F1; --surface:#FFFFFF; --surface-2:#EEF2EC;
+    --ink:#0F2340; --ink-2:#24344E; --muted:#5B6B7E; --line:#D9E0D6;
+    --navy:#0F2340; --navy-2:#162F57;
+    --green:#0E7A5F; --green-dark:#0A5E4A; --green-soft:#E3F0EA;
+    --gold:#E9B44C; --gold-soft:#FDF3D7;
+    --radius:18px; --radius-sm:12px;
+    --shadow:0 18px 40px rgba(15,35,64,.12);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Source Sans 3",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;font-size:17px}
+  h1,h2,h3{font-family:"Libre Franklin",system-ui,sans-serif;line-height:1.05;letter-spacing:-.02em;margin:0}
+  a{color:inherit}
+  img{max-width:100%;display:block}
+  .wrap{width:min(1120px,100% - 40px);margin:0 auto}
+  .topbar{background:var(--navy);color:#fff;text-align:center;padding:10px 16px;font-size:16px;font-weight:600}
+  .topbar a{color:#8EEBC7}
+  header{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 92%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+  .brand{font-family:"Libre Franklin",sans-serif;font-weight:900;font-size:19px;text-decoration:none;letter-spacing:-.03em}
+  .brand span{color:var(--green)}
+  .nav{display:none;gap:22px;font-size:15px;font-weight:600;color:var(--muted)}
+  .nav a{text-decoration:none}
+  .nav a:hover{color:var(--ink)}
+  @media(min-width:900px){.nav{display:flex}}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:700;border-radius:999px;padding:13px 22px;font-size:16px;transition:.18s;border:1.5px solid transparent;cursor:pointer;text-align:center}
+  .btn-primary{background:var(--green);color:#fff;box-shadow:0 8px 20px rgba(14,122,95,.28)}
+  .btn-primary:hover{background:var(--green-dark);transform:translateY(-1px)}
+  .btn-outline{border-color:var(--line);background:var(--surface);color:var(--ink)}
+  .btn-gold{background:var(--gold);color:#1A2A12}
+  .btn-sm{padding:10px 18px;font-size:15px}
+  .btn-lg{padding:17px 28px;font-size:18px;width:100%}
+  @media(min-width:560px){.btn-lg{width:auto}}
+  .hero{padding:38px 0 0}
+  .hero-grid{display:grid;gap:32px}
+  @media(min-width:920px){.hero-grid{grid-template-columns:1.05fr .95fr;align-items:start}}
+  .kicker{display:inline-flex;align-items:center;gap:8px;background:var(--green-soft);color:var(--green-dark);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:7px 12px;border-radius:999px}
+  .kicker i{width:8px;height:8px;background:var(--green);border-radius:50%;display:block}
+  .hero h1{font-size:clamp(38px,6vw,60px);font-weight:900;margin:18px 0 16px}
+  .hero h1 em{font-style:normal;color:var(--green);position:relative;white-space:nowrap}
+  .hero h1 em::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:8px;background:var(--gold);opacity:.55;z-index:-1;border-radius:4px}
+  .hero p.lead{font-size:19px;color:var(--muted);margin:0 0 22px;max-width:54ch}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+  .micro{font-size:14px;color:var(--muted)} .micro strong{color:var(--ink)}
+  .fact-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:26px}
+  .fact{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 12px;text-align:center}
+  .fact b{font-family:"Libre Franklin",sans-serif;font-size:20px;display:block;line-height:1}
+  .fact span{font-size:13px;color:var(--muted);line-height:1.25;display:block;margin-top:5px}
+  .hero-img{margin-top:30px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:#0B1728}
+  .hero-img img{width:100%;height:auto}
+  section{padding:56px 0}
+  .section-head{text-align:center;max-width:720px;margin:0 auto 36px}
+  .section-head h2{font-size:clamp(28px,4vw,40px);font-weight:900}
+  .section-head p{color:var(--muted);font-size:18px;margin:14px 0 0}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px}
+  .preview-badge{display:inline-block;background:var(--gold-soft);color:#6B4E00;font-weight:700;font-size:13px;padding:6px 12px;border-radius:999px}
+  .chat{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:20px;min-height:120px}
+  .chat b{color:var(--green-dark)}
+  .choices{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  .opt{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:11px 18px;font-weight:700;font-size:15px;cursor:pointer;color:var(--ink)}
+  .opt:hover{border-color:var(--green);color:var(--green-dark)}
+  .opt-primary{background:var(--green);color:#fff;border-color:var(--green)}
+  .video-wrap{position:relative;width:100%;overflow:hidden;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow);aspect-ratio:16/9;background:#000}
+  .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .pkg-grid{display:grid;gap:18px}
+  @media(min-width:700px){.pkg-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:1000px){.pkg-grid{grid-template-columns:1fr 1fr 1fr}}
+  .pkg{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}
+  .pkg h3{font-size:22px}
+  .pkg .agents{color:var(--muted);margin:6px 0 14px}
+  .pkg .price{color:var(--green);font-weight:700;font-size:18px}
+  .pkg ul{margin:14px 0 0;padding-left:20px;color:var(--ink-2);font-size:15px}
+  .pkg ul li{margin:5px 0}
+  .aeo{background:linear-gradient(180deg,var(--gold-soft),var(--surface));border:1px solid var(--gold)}
+  .aeo .tag{display:inline-block;background:var(--gold);color:#1A2A12;font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:7px 12px;border-radius:999px}
+  .aeo-grid{display:grid;gap:28px}
+  @media(min-width:920px){.aeo-grid{grid-template-columns:1.1fr .9fr;align-items:start}}
+  .check{list-style:none;margin:18px 0 0;padding:0}
+  .check li{padding-left:28px;position:relative;margin:10px 0;color:var(--ink-2)}
+  .check li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:900}
+  .not-list{list-style:none;margin:18px 0 0;padding:0}
+  .not-list li{padding-left:28px;position:relative;margin:10px 0;color:var(--ink-2)}
+  .not-list li::before{content:"✕";position:absolute;left:0;color:#B3261E;font-weight:900}
+  .link-grid{display:grid;gap:12px}
+  @media(min-width:700px){.link-grid{grid-template-columns:1fr 1fr}}
+  .link-card{display:block;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:16px 18px;text-decoration:none;font-weight:700;color:var(--green-dark)}
+  .link-card:hover{border-color:var(--green)}
+  details{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:18px 20px;margin-bottom:12px}
+  details summary{font-weight:700;cursor:pointer;font-family:"Libre Franklin",sans-serif;font-size:17px}
+  details p{color:var(--ink-2);margin:10px 0 0}
+  .news-panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)}
+  .news-panel .eyebrow{color:var(--green);text-transform:uppercase;letter-spacing:.08em;font-size:13px;font-weight:700}
+  footer{border-top:1px solid var(--line);padding:36px 0;text-align:center;color:var(--muted)}
+  .hidden{display:none}
+  </style>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "TechMind",
+      "url": "https://techmind.it.com",
+      "description": "TechMind builds AI sales assistants that answer fast, qualify leads, book appointments, and follow up \u2014 with your team in control."
+    },
+    {
+      "@type": "ProfessionalService",
+      "name": "TechMind",
+      "url": "https://techmind.it.com",
+      "telephone": "+1-408-624-8411",
+      "email": "hello@techmind.it.com",
+      "description": "AI Sales Assistants & Automation Services. AI assistants that capture and qualify leads, organize CRM updates, and prepare timely follow-ups for human approval.",
+      "areaServed": "Worldwide",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "TechMind AI Sales Assistant Packages",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Focus \u2014 1 AI agent",
+              "description": "Start with one dedicated AI sales assistant. Custom quote."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Team \u2014 2 AI agents",
+              "description": "Two AI sales assistants. Custom quote."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Department \u2014 3 AI agents",
+              "description": "Three AI sales assistants. Custom quote."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Operations \u2014 4 to 6 AI agents",
+              "description": "Four to six AI sales assistants. Custom quote."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Enterprise AI Team \u2014 7 to 10 AI agents",
+              "description": "Seven to ten AI sales assistants, a ten-agent Commander. Custom quote."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Answer Engine Optimization (AEO)",
+              "description": "Help AI tools such as ChatGPT, Perplexity, Google AI Overviews, Copilot, and Gemini find, understand, and cite a business in their answers. Includes AI crawler access, sitemap, llms.txt, structured data, answer-first pages, and citation tracking and reporting. No citation, ranking, or placement is guaranteed. Custom quote."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does TechMind do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "TechMind provides AI sales assistants and automation services for businesses: assistants that answer fast, qualify leads, book appointments, update your CRM, and prepare follow-ups for human approval. Start with one assistant (Focus) and scale to a ten-agent Commander. Add-ons include voice reception, cybersecurity, and custom automation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does a TechMind AI sales assistant work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It captures and qualifies leads, organizes CRM updates, and prepares timely follow-ups for human approval. Your team stays in control \u2014 nothing is sent without a human saying so."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I have to start with a big team?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Start with one dedicated assistant (Focus) and expand as your business needs grow \u2014 up to a ten-agent Commander."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is AEO, and how is it different from SEO?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SEO aims to rank your site in a list of links. AEO aims to get AI tools \u2014 ChatGPT, Perplexity, Google AI Overviews, Copilot, Gemini \u2014 to quote and cite your business inside their answers. The work overlaps (crawlable pages, clear answers, structured data), but the goal is a citation, not just a click."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does it cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Every TechMind package is a custom quote, priced after a consultation and written scope. Hosting, model usage, and third-party services are scoped separately. Book a free AI strategy call to get yours."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body>
-    <section class="hero">
-        <div class="container">
-            <h1>AI Agent <span>Swarm</span> for Hire</h1>
-            <p>Autonomous AI agents that work 24/7 — security monitoring, content production, customer service, and more. Deployed, trained, and managed by TechMind.</p>
+  <div class="topbar">Contact TechMind Solutions: <a href="tel:+14086248411">408-624-8411</a></div>
+  <header>
+    <div class="wrap header-inner">
+      <a class="brand" href="https://techmind.it.com/">Tech<span>Mind</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="directory.html">AI Tools Directory</a>
+        <a href="blog/">Blog</a>
+        <a href="directory.html#sponsorships">Sponsor TechMind</a>
+        <a href="#salesforce-packages">Agents</a>
+        <a href="#aeo">AEO</a>
+        <a href="packages.html#inquiry">Consultation</a>
+      </nav>
+      <a class="btn btn-primary btn-sm" href="packages.html#inquiry">Book a Strategy Call</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <div class="hero">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <span class="kicker"><i></i> AI Sales Assistants &amp; Automation Services</span>
+            <h1>AI Sales <em>Assistants</em></h1>
+            <p class="lead">TechMind builds AI sales assistants that answer fast, qualify leads, book appointments, and follow up — with your team in control. Turn more business inquiries into opportunities with AI assistants tailored to your workflow. Help customers get answers, qualify new leads, coordinate appointments, and keep follow-ups moving — with your team in control. Start with one dedicated assistant and expand as your business needs grow.</p>
             <div class="hero-actions">
-                <a href="#pricing" class="btn btn-primary">View Plans</a>
-                <a href="#blog" class="btn btn-outline">Read Blog</a>
+              <a class="btn btn-primary btn-lg" href="packages.html#inquiry">Book a Free AI Strategy Call</a>
+              <a class="btn btn-outline btn-lg" href="packages.html#inquiry">Request a Phone Call</a>
             </div>
+            <p class="micro"><strong>TechMind AI Sales Assistants</strong> · Capture leads, qualify prospects, and coordinate follow-ups.</p>
+            <div class="fact-strip">
+              <div class="fact"><b>1</b><span>agent to start</span></div>
+              <div class="fact"><b>10</b><span>agent Commander at full scale</span></div>
+              <div class="fact"><b>100%</b><span>human approval on follow-ups</span></div>
+            </div>
+          </div>
+          <div>
+            <div class="hero-img">
+              <img src="/salesforce-robot.svg" width="500" height="650" alt="Futuristic TechMind AI SalesForce robot" loading="eager" fetchpriority="high">
+            </div>
+            <p class="micro" style="text-align:center;margin-top:12px">Deploy your own AI sales team — start with one agent, scale to a ten-agent Commander.</p>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <!-- ASSISTANT PREVIEW -->
+    <section id="assistant-preview">
+      <div class="wrap">
+        <div class="card">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px">
+            <h2 style="font-size:clamp(24px,3vw,32px)">Meet Your AI Sales Assistant</h2>
+            <span class="preview-badge">Interactive preview · Voice coming soon</span>
+          </div>
+          <p style="color:var(--muted);margin:0 0 18px">Explore how a TechMind assistant could qualify a prospect. This is a guided demonstration, not a live AI conversation. No personal information is collected or stored in this preview.</p>
+          <div class="chat" role="status" aria-live="polite">
+            <p style="margin:0 0 6px"><b>TechMind Sales Assistant · Preview</b></p>
+            <p id="tm-preview-message" style="margin:0">Welcome! What would you like an AI sales assistant to help your business accomplish?</p>
+          </div>
+          <div id="tm-preview-choices" class="choices">
+            <button type="button" data-choice="leads" class="opt opt-primary">Capture more leads</button>
+            <button type="button" data-choice="calls" class="opt">Answer calls 24/7</button>
+            <button type="button" data-choice="followup" class="opt">Automate follow-ups</button>
+          </div>
+          <div id="tm-preview-next" class="hidden" style="margin-top:18px">
+            <p style="color:var(--ink-2);margin:0 0 14px" id="tm-preview-followup"></p>
+            <div style="display:flex;flex-wrap:wrap;gap:10px">
+              <a id="tm-preview-email" class="btn btn-primary" href="packages.html#inquiry">Request a consultation</a>
+              <a class="btn btn-outline" href="tel:+14086248411">Call 408-624-8411</a>
+              <button type="button" id="tm-preview-reset" class="btn btn-outline">Start over</button>
+            </div>
+          </div>
+          <p class="micro" style="margin-top:18px">Real-time voice, secure lead storage, and automatic email notifications will be enabled only after a backend provider is configured and approved.</p>
+        </div>
+      </div>
     </section>
 
-    <section class="pricing" id="pricing">
-        <div class="container">
-            <div class="section-title">
-                <h2>Agent <span style="background: linear-gradient(135deg, #a78bfa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Plans</span></h2>
-                <p>Choose the swarm size that fits your needs. Scale up anytime.</p>
-            </div>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <div class="plan-name">Single Agent</div>
-                    <div class="plan-desc">Perfect for small tasks</div>
-                    <div class="plan-price"><span class="amount">$299</span><span class="period">/month</span></div>
-                    <ul class="plan-features">
-                        <li>1 AI Agent</li>
-                        <li>Single task focus</li>
-                        <li>24/7 operation</li>
-                        <li>Email support</li>
-                        <li>Weekly reports</li>
-                    </ul>
-                    <a href="mailto:4clickpro@gmail.com?subject=Single Agent Plan" class="btn btn-outline" style="width:100%;justify-content:center;">Get Started</a>
-                </div>
-                <div class="pricing-card featured">
-                    <div class="plan-name">Agent Swarm</div>
-                    <div class="plan-desc">Most popular for businesses</div>
-                    <div class="plan-price"><span class="amount">$999</span><span class="period">/month</span></div>
-                    <ul class="plan-features">
-                        <li>5 AI Agents</li>
-                        <li>Multi-task coordination</li>
-                        <li>24/7 operation</li>
-                        <li>Priority support</li>
-                        <li>Daily reports</li>
-                        <li>Custom training</li>
-                        <li>API access</li>
-                    </ul>
-                    <a href="mailto:4clickpro@gmail.com?subject=Agent Swarm Plan" class="btn btn-primary" style="width:100%;justify-content:center;">Get Started</a>
-                </div>
-                <div class="pricing-card">
-                    <div class="plan-name">Full Fleet</div>
-                    <div class="plan-desc">Enterprise-grade deployment</div>
-                    <div class="plan-price"><span class="amount">$2,499</span><span class="period">/month</span></div>
-                    <ul class="plan-features">
-                        <li>15+ AI Agents</li>
-                        <li>Full swarm coordination</li>
-                        <li>24/7 operation</li>
-                        <li>Dedicated manager</li>
-                        <li>Real-time dashboard</li>
-                        <li>Custom integrations</li>
-                        <li>SLA guarantee</li>
-                        <li>On-chain verification</li>
-                    </ul>
-                    <a href="mailto:4clickpro@gmail.com?subject=Full Fleet Plan" class="btn btn-outline" style="width:100%;justify-content:center;">Contact Sales</a>
-                </div>
-            </div>
+    <!-- VIDEO -->
+    <section id="video" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>See AI Sales Automation in Action</h2>
+          <p>Watch how a TechMind assistant captures, qualifies, and follows up — with your team in control.</p>
         </div>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube-nocookie.com/embed/IcaqxvHQc_k" title="AI Sales Automation — Video Demonstration" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+        <p class="micro" style="text-align:center;margin-top:12px">Watch the video here or <a href="https://www.youtube.com/watch?v=IcaqxvHQc_k" target="_blank" rel="noopener noreferrer" style="color:var(--green-dark);font-weight:700">open it on YouTube</a>.</p>
+      </div>
     </section>
 
-    <section class="features">
-        <div class="container">
-            <div class="section-title">
-                <h2>What Our <span style="background: linear-gradient(135deg, #a78bfa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Agents</span> Do</h2>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card"><span class="feature-icon">🛡️</span><h3>Security Monitoring</h3><p>24/7 threat detection, vulnerability scanning, and incident response.</p></div>
-                <div class="feature-card"><span class="feature-icon">📝</span><h3>Content Production</h3><p>Blog posts, social media, video scripts — all generated autonomously.</p></div>
-                <div class="feature-card"><span class="feature-icon">💬</span><h3>Customer Service</h3><p>AI-powered support that handles inquiries, FAQs, and ticket routing.</p></div>
-                <div class="feature-card"><span class="feature-icon">📊</span><h3>Market Intelligence</h3><p>Competitor tracking, trend analysis, and automated reporting.</p></div>
-                <div class="feature-card"><span class="feature-icon">🔧</span><h3>DevOps Automation</h3><p>Code deployment, testing, monitoring, and infrastructure management.</p></div>
-                <div class="feature-card"><span class="feature-icon">🤖</span><h3>Custom Agents</h3><p>Purpose-built agents trained for your specific business needs.</p></div>
-            </div>
+    <!-- PACKAGES -->
+    <section id="salesforce-packages" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>AI SalesForce Packages</h2>
+          <p>Build an AI support team around the work that matters to your business. Choose dedicated assistants for customer inquiries, lead qualification, appointment coordination, CRM updates, and follow-up preparation. Each solution is tailored to your processes, with human approval where it matters.</p>
         </div>
+        <div class="pkg-grid">
+          <article class="pkg"><h3>Focus</h3><p class="agents">1 agent</p><p class="price">Custom quote</p><ul><li>One dedicated AI sales assistant</li><li>Lead capture and qualification</li><li>Follow-ups prepared for human approval</li></ul></article>
+          <article class="pkg"><h3>Team</h3><p class="agents">2 agents</p><p class="price">Custom quote</p><ul><li>Two dedicated AI sales assistants</li><li>Lead qualification and appointment coordination</li><li>CRM updates prepared for your team</li></ul></article>
+          <article class="pkg"><h3>Department</h3><p class="agents">3 agents</p><p class="price">Custom quote</p><ul><li>Three dedicated AI sales assistants</li><li>Customer inquiries, qualification, and booking</li><li>Follow-up preparation with human approval</li></ul></article>
+          <article class="pkg"><h3>Operations</h3><p class="agents">4–6 agents</p><p class="price">Custom quote</p><ul><li>Four to six dedicated AI sales assistants</li><li>Full inquiry-to-follow-up coverage</li><li>CRM workflow support across the team</li></ul></article>
+          <article class="pkg"><h3>Enterprise AI Team</h3><p class="agents">7–10 agents</p><p class="price">Custom quote</p><ul><li>Seven to ten dedicated AI sales assistants</li><li>A full AI sales department — the Enterprise Swarm</li><li>Tailored to your processes, with human oversight</li></ul></article>
+          <article class="pkg aeo" style="box-shadow:var(--shadow)"><h3>AEO — Answer Engine Optimization</h3><p class="agents">Get quoted by AI answers</p><p class="price">Custom quote</p><ul><li>Be cited by ChatGPT, Perplexity, Google AI, Copilot &amp; Gemini</li><li>AI crawler access, sitemap, llms.txt &amp; schema</li><li>Citation tracking and reporting</li></ul><p style="margin:14px 0 0"><a href="#aeo" style="color:var(--green-dark);font-weight:700">See what AEO includes →</a></p></article>
+        </div>
+        <p class="micro" style="margin-top:22px;text-align:center">Pricing is customized after a consultation and written scope. Hosting, model usage and third-party services are scoped separately.</p>
+        <p style="text-align:center;margin-top:18px"><a class="btn btn-primary btn-lg" href="packages.html#inquiry">Book Your Free AI Strategy Call →</a></p>
+        <p class="micro" style="text-align:center;margin-top:16px">Add-ons: voice reception · cybersecurity · custom automation.</p>
+      </div>
     </section>
 
-    <section class="blog" id="blog">
-        <div class="container">
-            <div class="section-title">
-                <h2>From the <span style="background: linear-gradient(135deg, #a78bfa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Blog</span></h2>
-                <p>Insights on AI agents, automation, and the future of work.</p>
+    <!-- AEO PACKAGE -->
+    <section id="aeo" style="padding-top:0">
+      <div class="wrap">
+        <div class="card aeo">
+          <div class="aeo-grid">
+            <div>
+              <span class="tag">New package</span>
+              <h2 style="font-size:clamp(28px,4vw,40px);margin:16px 0 12px">Answer Engine Optimization (AEO)</h2>
+              <p style="color:var(--ink-2);font-size:18px;margin:0 0 8px">More buyers now ask an AI tool first — ChatGPT, Perplexity, Google AI Overviews, Copilot, and Gemini — instead of scrolling a list of links. AEO helps those tools find your business, understand it correctly, and <strong>quote and cite you in their answers</strong>.</p>
+              <p style="color:var(--muted);margin:0">It is SEO for AI answers: the same discipline as getting found on Google, aimed at the answer itself. TechMind builds it the same way we built it for our own business-loans site — the same setup, applied to your business.</p>
+              <ul class="check">
+                <li><strong>AI crawler access</strong> — your site opened to the crawlers that power AI answers (OAI-SearchBot, PerplexityBot, ClaudeBot, Google-Extended, and others), set in robots.txt</li>
+                <li><strong>Sitemap</strong> — submitted and kept up to date, so AI tools and search engines find every page</li>
+                <li><strong>llms.txt</strong> — a short, plain guide to your business that AI tools can read and quote from</li>
+                <li><strong>Structured data (schema)</strong> — your business, services, and FAQs marked up so machines read them unambiguously</li>
+                <li><strong>Answer-first pages</strong> — pages that answer one customer question clearly in the first sentences, so an AI can cite them</li>
+                <li><strong>Citation tracking &amp; reporting</strong> — we check what ChatGPT, Perplexity, and Gemini actually say about you, and report which questions cite you</li>
+              </ul>
             </div>
-            <div class="blog-grid">
-                <div class="blog-card">
-                    <div class="blog-card-content">
-                        <div class="blog-date">May 19, 2026</div>
-                        <h3>Why AI Agent Swarms Are Replacing Traditional Software</h3>
-                        <p>The shift from single-purpose tools to coordinated multi-agent systems is accelerating. Here's why businesses are making the switch — and how to get started.</p>
-                        <a href="#" class="blog-link">Read More →</a>
-                    </div>
-                </div>
-                <div class="blog-card">
-                    <div class="blog-card-content">
-                        <div class="blog-date">May 15, 2026</div>
-                        <h3>The True Cost of Building AI Agents In-House vs. Hiring a Swarm</h3>
-                        <p>Engineering time, infrastructure, maintenance, hidden costs. We break down the real numbers behind build vs. buy for AI agent deployment.</p>
-                        <a href="#" class="blog-link">Read More →</a>
-                    </div>
-                </div>
-                <div class="blog-card">
-                    <div class="blog-card-content">
-                        <div class="blog-date">May 10, 2026</div>
-                        <h3>Security-First AI: Why Your Agents Need Guardrails</h3>
-                        <p>Autonomous agents are powerful — but without proper security, they're a liability. Learn how TechMind builds security into every layer of the swarm.</p>
-                        <a href="#" class="blog-link">Read More →</a>
-                    </div>
-                </div>
+            <div>
+              <div style="background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:22px">
+                <h3 style="font-size:20px">What AEO is not</h3>
+                <ul class="not-list">
+                  <li><strong>No guaranteed citation, ranking, or placement.</strong> No one can guarantee an AI will cite you — the engines decide. We remove the obstacles and prove results with real citations, not promises.</li>
+                  <li><strong>No fake mentions.</strong> No invented reviews, no fake listings, no misleading claims about your business.</li>
+                  <li><strong>Not a one-time trick.</strong> AI answers change week to week, so AEO is measured and maintained, not set and forgotten.</li>
+                </ul>
+                <p style="margin:18px 0 6px;font-size:22px;font-weight:800">Custom quote</p>
+                <p class="micro" style="margin:0 0 16px">Priced after a consultation and written scope, like every TechMind package.</p>
+                <a class="btn btn-primary btn-lg" href="packages.html#inquiry" style="width:100%">Book Your Free AI Strategy Call →</a>
+                <p class="micro" style="margin:12px 0 0;text-align:center">Or call <a href="tel:+14086248411" style="color:var(--green-dark);font-weight:700">408-624-8411</a></p>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <section class="cta">
-        <div class="container">
-            <h2>Ready to Deploy Your <span style="background: linear-gradient(135deg, #a78bfa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Swarm</span>?</h2>
-            <p>Get started today. Our agents are ready to work for you 24/7.</p>
-            <a href="mailto:4clickpro@gmail.com" class="btn btn-primary">Hire the Swarm →</a>
+    <!-- SOLUTIONS BY NEED -->
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>AI Sales Solutions by Business Need</h2>
+          <p>Explore how TechMind can tailor AI reception, lead qualification and follow-up workflows to your industry.</p>
         </div>
+        <div class="link-grid">
+          <a class="link-card" href="/ai-sales-receptionist-lead-capture.html">AI sales receptionist with lead capture →</a>
+          <a class="link-card" href="/ai-voice-receptionist-small-business.html">AI voice receptionist for small businesses →</a>
+          <a class="link-card" href="/ai-receptionist-roofing-contractors.html">AI receptionist for roofing contractors →</a>
+          <a class="link-card" href="/ai-appointment-booking-hvac.html">AI appointment booking for HVAC →</a>
+          <a class="link-card" href="/ai-lead-qualification-service.html">AI lead qualification services →</a>
+          <a class="link-card" href="/ai-sales-assistant-it-services.html">AI sales assistant for IT providers →</a>
+          <a class="link-card" href="/ai-receptionist-crm-integration.html">AI receptionist with CRM integration →</a>
+          <a class="link-card" href="/24-7-ai-answering-contractors.html">24/7 AI answering for contractors →</a>
+          <a class="link-card" href="/ai-sales-follow-up-small-business.html">AI sales follow-up automation →</a>
+          <a class="link-card" href="/custom-ai-sales-agents-high-ticket.html">Custom AI agents for high-ticket sales →</a>
+        </div>
+      </div>
     </section>
 
-    <footer class="footer">
-        <div class="container">
-            <p>© 2026 TechMind AI Security. All rights reserved.</p>
+    <!-- FAQ -->
+    <section style="padding-top:0">
+      <div class="wrap" style="max-width:820px">
+        <div class="section-head">
+          <h2>Questions, answered</h2>
         </div>
-    </footer>
+        <details open>
+          <summary>What does TechMind do?</summary>
+          <p>TechMind provides AI sales assistants and automation services for businesses: assistants that answer fast, qualify leads, book appointments, update your CRM, and prepare follow-ups for human approval. Start with one assistant (Focus) and scale to a ten-agent Commander. Add-ons include voice reception, cybersecurity, and custom automation.</p>
+        </details>
+        <details>
+          <summary>How does a TechMind AI sales assistant work?</summary>
+          <p>It captures and qualifies leads, organizes CRM updates, and prepares timely follow-ups for human approval. Your team stays in control — nothing is sent without a human saying so.</p>
+        </details>
+        <details>
+          <summary>Do I have to start with a big team?</summary>
+          <p>No. Start with one dedicated assistant (Focus) and expand as your business needs grow — up to a ten-agent Commander.</p>
+        </details>
+        <details>
+          <summary>What is AEO, and how is it different from SEO?</summary>
+          <p>SEO aims to rank your site in a list of links. AEO aims to get AI tools — ChatGPT, Perplexity, Google AI Overviews, Copilot, Gemini — to quote and cite your business inside their answers. The work overlaps (crawlable pages, clear answers, structured data), but the goal is a citation, not just a click.</p>
+        </details>
+        <details>
+          <summary>How much does it cost?</summary>
+          <p>Every TechMind package is a custom quote, priced after a consultation and written scope. Hosting, model usage, and third-party services are scoped separately. Book a free AI strategy call to get yours.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- NEWS + PARTNER -->
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="news-panel" style="max-width:560px;margin-left:auto">
+          <p class="eyebrow">TechMind AI News</p>
+          <h2 style="font-size:26px;margin:8px 0 14px">Latest AI News &amp; Guides</h2>
+          <p class="micro">November 2, 2026 · AI Tools Guide</p>
+          <h3 style="font-size:19px;margin:8px 0"><a href="/news/choosing-ai-tools-for-business.html" style="color:var(--green-dark)">How to Choose AI Tools for Your Business →</a></h3>
+          <p style="color:var(--ink-2);margin:0 0 14px">Find useful AI products without unnecessary subscriptions.</p>
+          <p style="margin:0"><a href="/news.html" style="color:var(--green-dark);font-weight:700">View all AI articles →</a> &nbsp;·&nbsp; <a href="directory.html" style="color:var(--green-dark);font-weight:700">Explore AI Tools Directory →</a></p>
+        </div>
+        <div class="card" style="margin-top:24px">
+          <p style="color:var(--green);font-weight:700;margin:0 0 6px">Part of the TechMind AI ecosystem</p>
+          <h2 style="font-size:26px">Explore the AI Agent Directory</h2>
+          <p style="color:var(--ink-2)">Discover AI agent categories for sales, customer support, marketing, research and business automation on AIagent.com.mx.</p>
+          <p style="margin:0"><a href="https://www.aiagent.com.mx/" target="_blank" rel="noopener noreferrer" style="color:var(--green-dark);font-weight:700">Visit AIagent.com.mx →</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><a href="tel:+14086248411" style="color:var(--green-dark);font-weight:700">Call TechMind Solutions: 408-624-8411</a></p>
+    <p>© 2026 TechMind AI. Sales automation with human oversight.</p>
+  </footer>
+
+  <script>
+  (() => {
+    const options = {
+      leads: ['Lead capture', 'We can qualify prospects by business type, service needs, and purchase timeline before passing them to your team.', 'I want help capturing and qualifying leads'],
+      calls: ['24/7 call answering', 'A voice receptionist can answer common questions, collect caller details with consent, and route promising inquiries.', 'I want an AI voice receptionist'],
+      followup: ['Sales follow-up', 'A sales assistant can prepare follow-up messages and CRM updates, with human review before sending.', 'I want AI sales follow-up automation']
+    };
+    const choices = document.getElementById('tm-preview-choices');
+    const next = document.getElementById('tm-preview-next');
+    choices.addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-choice]');
+      if (!button) return;
+      const option = options[button.dataset.choice];
+      if (!option) return;
+      document.getElementById('tm-preview-message').textContent = option[1];
+      document.getElementById('tm-preview-followup').textContent = 'Would you like to discuss a ' + option[0].toLowerCase() + ' solution for your business?';
+      document.getElementById('tm-preview-email').href = 'packages.html#inquiry';
+      choices.classList.add('hidden');
+      next.classList.remove('hidden');
+    });
+    document.getElementById('tm-preview-reset').addEventListener('click', () => {
+      document.getElementById('tm-preview-message').textContent = 'Welcome! What would you like an AI sales assistant to help your business accomplish?';
+      next.classList.add('hidden');
+      choices.classList.remove('hidden');
+    });
+  })();
+  </script>
 </body>
 </html>

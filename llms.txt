@@ -1,0 +1,45 @@
+# TechMind
+
+> TechMind builds AI sales assistants that answer fast, qualify leads, book appointments, and follow up — with your team in control.
+
+Website: https://techmind.it.com/
+Contact: 408-624-8411 — Book Your Free AI Strategy Call.
+
+## What TechMind does
+
+TechMind provides AI Sales Assistants & Automation Services for businesses. An AI sales assistant captures and qualifies leads, organizes CRM updates, and prepares timely follow-ups for human approval. Nothing is sent without a human saying so. Start with one dedicated assistant and expand as your business needs grow.
+
+## Packages (all Custom quote)
+
+- Focus — 1 AI agent. Start with one dedicated assistant.
+- Team — 2 AI agents.
+- Department — 3 AI agents.
+- Operations — 4 to 6 AI agents.
+- Enterprise AI Team — 7 to 10 AI agents, up to a ten-agent Commander.
+
+Add-ons: voice reception, cybersecurity, custom automation. Every package is a custom quote, priced after a consultation and written scope. Hosting, model usage, and third-party services are scoped separately.
+
+## Answer Engine Optimization (AEO) — new package, Custom quote
+
+More buyers now ask an AI tool first — ChatGPT, Perplexity, Google AI Overviews, Copilot, and Gemini — instead of scrolling a list of links. AEO helps those tools find a business, understand it correctly, and quote and cite it in their answers.
+
+AEO includes: AI crawler access (robots.txt), sitemap, llms.txt, structured data/schema, answer-first pages, and citation tracking and reporting.
+
+No citation, ranking, or placement is guaranteed. No fake mentions or reviews. AEO is measured and maintained, not set and forgotten.
+
+## Questions owners ask
+
+- What does TechMind do? TechMind builds AI sales assistants that answer fast, qualify leads, book appointments, and follow up — with your team in control.
+- How many AI agents do I start with? Start with one dedicated assistant (Focus) and expand as your business needs grow — up to a ten-agent Commander.
+- What is AEO, and how is it different from SEO? SEO aims to rank a site in a list of links. AEO aims to get AI tools to quote and cite a business inside their answers.
+
+## Key pages
+
+- [Home](https://techmind.it.com/)
+- [AI tools directory](https://techmind.it.com/directory.html)
+- [AI sales and lead capture](https://techmind.it.com/ai-sales-receptionist-lead-capture.html)
+- [AI lead qualification](https://techmind.it.com/ai-lead-qualification-service.html)
+- [AI appointment booking for HVAC](https://techmind.it.com/ai-appointment-booking-hvac.html)
+- [AI Agent Directory — aiagent.com.mx](https://www.aiagent.com.mx/) — part of the TechMind AI ecosystem, with categories for sales, customer service, research, marketing, operations, and development agents.
+
+For additional public pages, consult https://techmind.it.com/sitemap.xml. Information on this site is subject to change; verify current offerings on the linked pages.
